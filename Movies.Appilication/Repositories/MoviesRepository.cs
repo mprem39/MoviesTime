@@ -7,7 +7,7 @@ namespace Movies.Appilication.Repositories
 {
     public class MoviesRepository : IMoviesRepository
     {
-        private readonly List<Movie> _movies = new();
+        private static readonly List<Movie> _movies = new();
         public Task<bool> CreateAsync(Movie movie)
         {
             _movies.Add(movie);

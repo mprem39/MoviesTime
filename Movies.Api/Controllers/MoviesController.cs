@@ -30,5 +30,25 @@ namespace Movies.Api.Controllers
             }
             return BadRequest();
         }
+
+        [HttpGet(ApiEndpoints.Movies.GetById)]
+        public async Task<IActionResult> GetMovieById([FromRoute] Guid id)
+        {
+            var movie = await _moviesRepository.GetByIdAsync(id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            var movieResponse = movie.MapToMovieResponse();
+            return Ok(movieResponse);
+        }
+
+        [HttpGet(ApiEndpoints.Movies.GetAll)]
+        public async Task<IActionResult> GetAllMovies()
+        {
+            var movies = await _moviesRepository.GetAllMoviesAsync();
+            var movieResponses = movies.MapToMoviesResponse();
+            return Ok(movieResponses);
+        }
     }
 }
