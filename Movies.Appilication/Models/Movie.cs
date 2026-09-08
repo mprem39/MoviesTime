@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Movies.Appilication.Models
+{
+    public class Movie
+    {
+        public required Guid Id { get; init; }
+        public required string Title { get; init; }
+        public required int YearOfRelease { get; init; }
+        public required List<string> Genres { get; init; } = new();
+    }
+}
