@@ -26,7 +26,8 @@ namespace Movies.Api.Controllers
             if (created)
             {
                 var movieResponse = movie.MapToMovieResponse();
-                return Created($"/{ApiEndpoints.Movies.Create}/{movieResponse.Id}",  movieResponse);
+                //return Created($"/{ApiEndpoints.Movies.Create}/{movieResponse.Id}",  movieResponse);
+                return CreatedAtAction(nameof(GetMovieById), new { id = movieResponse.Id }, movieResponse);
             }
             return BadRequest();
         }
