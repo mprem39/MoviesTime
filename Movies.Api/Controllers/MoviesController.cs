@@ -27,15 +27,15 @@ namespace Movies.Api.Controllers
             {
                 var movieResponse = movie.MapToMovieResponse();
                 //return Created($"/{ApiEndpoints.Movies.Create}/{movieResponse.Id}",  movieResponse);
-                return CreatedAtAction(nameof(GetMovieById), new { id = movieResponse.Id }, movieResponse);
+                return CreatedAtAction(nameof(GetMovieById), new { idorSlug = movieResponse.Id }, movieResponse);
             }
             return BadRequest();
         }
 
         [HttpGet(ApiEndpoints.Movies.GetById)]
-        public async Task<IActionResult> GetMovieById([FromRoute] Guid id)
+        public async Task<IActionResult> GetMovieById([FromRoute] string idorSlug)
         {
-            var movie = await _moviesRepository.GetByIdAsync(id);
+            var movie = Guid.TryParse(idorSlug, out var id) ? await _moviesRepository.GetByIdAsync(id) : await _moviesRepository.GetBySlugAsync(idorSlug);
             if (movie == null)
             {
                 return NotFound();
