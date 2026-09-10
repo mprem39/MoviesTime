@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Movies.Contract.Responses;
 
-namespace Movies.Api.Controllers;
+namespace Movies.Api.Mapping;
 
 public class ValidationMappingMiddleware
 {

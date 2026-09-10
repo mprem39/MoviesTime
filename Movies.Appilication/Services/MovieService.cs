@@ -3,6 +3,7 @@
 using FluentValidation;
 using Movies.Appilication.Models;
 using Movies.Appilication.Repositories;
+using Movies.Application.Repositories;
 
 namespace Movies.Application.Services;
 
@@ -10,12 +11,13 @@ public class MovieService : IMovieService
 {
     private readonly IMoviesRepository _movieRepository;
     private readonly IValidator<Movie> _movieValidator;
+    private readonly IRatingRepository _ratingRepository;
 
-
-    public MovieService(IMoviesRepository movieRepository, IValidator<Movie> validator)
+    public MovieService(IMoviesRepository movieRepository, IValidator<Movie> movieValidator, IRatingRepository ratingRepository)
     {
         _movieRepository = movieRepository;
-        _movieValidator = validator;
+        _movieValidator = movieValidator;
+        _ratingRepository = ratingRepository;
     }
 
     public async Task<bool> CreateAsync(Movie movie, CancellationToken token)
@@ -40,16 +42,27 @@ public class MovieService : IMovieService
         return _movieRepository.GetAllMoviesAsync(userId, token);
     }
 
-    public async Task<Movie?> UpdateAsync(Movie movie, Guid? userId=default, CancellationToken token=default)
+    public async Task<Movie?> UpdateAsync(Movie movie, Guid? userid = default,CancellationToken token=default)
     {
         await _movieValidator.ValidateAndThrowAsync(movie, cancellationToken: token);
-        var movieExists = await _movieRepository.ExistbyId(movie.Id);
+        var movieExists = await _movieRepository.ExistsByIdAsync(movie.Id, token);
         if (!movieExists)
         {
             return null;
         }
 
-        await _movieRepository.UpdateAsync(movie, userId, token);
+        await _movieRepository.UpdateAsync(movie, userid, token);
+
+        if (!userid.HasValue)
+        {
+            var rating = await _ratingRepository.GetRatingAsync(movie.Id, token);
+            movie.Rating = rating;
+            return movie;
+        }
+
+        var ratings = await _ratingRepository.GetRatingAsync(movie.Id, userid.Value, token);
+        movie.Rating = ratings.Rating;
+        movie.UserRating = ratings.UserRating;
         return movie;
     }
 
