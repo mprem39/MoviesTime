@@ -66,7 +66,7 @@ namespace Movies.Appilication.Repositories
             """, new { id }));
         }
 
-        public async Task<IEnumerable<Movie>> GetAllMoviesAsync(CancellationToken token)
+        public async Task<IEnumerable<Movie>> GetAllMoviesAsync(Guid? userId, CancellationToken token)
         {
             using var connection = await _dbConnectionFactory.CreateConnectionAsync();
             var result = await connection.QueryAsync(new CommandDefinition("""
@@ -84,7 +84,7 @@ namespace Movies.Appilication.Repositories
             });
         }
 
-        public async Task<Movie?> GetByIdAsync(Guid id, CancellationToken token)
+        public async Task<Movie?> GetByIdAsync(Guid id, Guid? userId, CancellationToken token)
         {
             using var connection = await _dbConnectionFactory.CreateConnectionAsync();
             var movie = await connection.QuerySingleOrDefaultAsync<Movie>(
@@ -112,7 +112,7 @@ namespace Movies.Appilication.Repositories
 
         }
 
-        public async Task<Movie?> GetBySlugAsync(string slug, CancellationToken token)
+        public async Task<Movie?> GetBySlugAsync(string slug, Guid? userId, CancellationToken token)
         {
             using var connection = await _dbConnectionFactory.CreateConnectionAsync();  
             var movie = await connection.QuerySingleOrDefaultAsync<Movie>(
@@ -138,7 +138,7 @@ namespace Movies.Appilication.Repositories
             return movie;
         }
 
-        public async Task<bool> UpdateAsync(Movie movie, CancellationToken token)
+        public async Task<bool> UpdateAsync(Movie movie, Guid? userId, CancellationToken token)
         {
             using var connection = await _dbConnectionFactory.CreateConnectionAsync();
             using var transaction = connection.BeginTransaction();
