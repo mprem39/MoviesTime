@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path="docker-compose.yml" />
   </Folder>
+  <Project Path="Identity.Api/Identity.Api.csproj" Id="6515b94e-d88a-4329-8716-a399cf3659e3" />
   <Project Path="Movies.Api/Movies.Api.csproj" />
   <Project Path="Movies.Appilication/Movies.Appilication.csproj" />
   <Project Path="Movies.Contract/Movies.Contract.csproj" />
