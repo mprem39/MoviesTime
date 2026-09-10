@@ -10,7 +10,6 @@ using Movies.Contracts.Responses;
 namespace Movies.Api.Controllers
 {
     [ApiController]
-    [Authorize]
     public class MoviesController : ControllerBase
     {
         private readonly IMovieService _movies;
@@ -20,6 +19,7 @@ namespace Movies.Api.Controllers
             _movies = movies;
         }
 
+        [Authorize(AuthConstants.AdminUserPolicyName)]
         [HttpPost(ApiEndpoints.Movies.Create)]
         public async Task<IActionResult> CreateMovie([FromBody] CreateMovieRequest createMovieRequest, CancellationToken token)
         {
@@ -33,7 +33,7 @@ namespace Movies.Api.Controllers
             }
             return BadRequest();
         }
-        [AllowAnonymous]
+        
         [HttpGet(ApiEndpoints.Movies.GetById)]
         public async Task<IActionResult> GetMovieById([FromRoute] string idorSlug, CancellationToken token)
         {
@@ -45,7 +45,7 @@ namespace Movies.Api.Controllers
             var movieResponse = movie.MapToMovieResponse();
             return Ok(movieResponse);
         }
-        [AllowAnonymous]
+       
         [HttpGet(ApiEndpoints.Movies.GetAll)]
         public async Task<IActionResult> GetAllMovies(CancellationToken token)
         {
@@ -53,7 +53,7 @@ namespace Movies.Api.Controllers
             var movieResponses = movies.MapToMoviesResponse();
             return Ok(movieResponses);
         }
-
+        [Authorize(AuthConstants.AdminUserPolicyName)]
         [HttpPut(ApiEndpoints.Movies.Update)]
         public async Task<IActionResult> UpdateMovie([FromRoute] Guid id, [FromBody] UpdateMovieRequest updateMovieRequest, CancellationToken token)
         {
@@ -66,7 +66,7 @@ namespace Movies.Api.Controllers
             var movieResponse = updatedMovie.MapToMovieResponse();
             return Ok(movieResponse);
         }
-
+        [Authorize(AuthConstants.AdminUserPolicyName)]
         [HttpDelete(ApiEndpoints.Movies.Delete)]
         public async Task<IActionResult> DeleteMovie([FromRoute] Guid id, CancellationToken token)
         {
