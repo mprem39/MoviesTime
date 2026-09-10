@@ -7,12 +7,12 @@ namespace Movies.Appilication.Repositories
 {
     public interface IMoviesRepository
     {
-        Task<bool> CreateAsync(Movie movie);
-        Task<Movie?> GetByIdAsync(Guid id);
-        Task<Movie?> GetBySlugAsync(string slug);
-        Task<IEnumerable<Movie>> GetAllMoviesAsync();
-        Task<bool> UpdateAsync(Movie movie);
-        Task<bool> DeleteByIdAsync(Guid id);
+        Task<bool> CreateAsync(Movie movie, CancellationToken token=default);
+        Task<Movie?> GetByIdAsync(Guid id, CancellationToken token=default);
+        Task<Movie?> GetBySlugAsync(string slug, CancellationToken token=default);
+        Task<IEnumerable<Movie>> GetAllMoviesAsync(CancellationToken token=default);
+        Task<bool> UpdateAsync(Movie movie, CancellationToken token=default);
+        Task<bool> DeleteByIdAsync(Guid id, CancellationToken token=default);
         Task<bool> ExistbyId(Guid id);
     }
 }
