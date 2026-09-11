@@ -1,5 +1,6 @@
 ﻿using Movies.Appilication.Models;
 using Movies.Application.Models;
+using Movies.Contract.Requests;
 using Movies.Contracts.Requests;
 using Movies.Contracts.Responses;
 
@@ -58,5 +59,18 @@ public static class ContractMapping
             Slug = x.Slug,
             MovieId = x.MovieId
         });
+    }
+    public static GetAllMoviesOptions MapToOptions(this GetAllMoviesRequest options)
+    {
+        return new GetAllMoviesOptions
+        {
+            Title = options.Title,
+            Year = options.Year
+        };
+    }
+    public static GetAllMoviesOptions WithUser(this GetAllMoviesOptions options, Guid? userId)
+    {
+        options.UserId = userId;
+        return options;
     }
 }

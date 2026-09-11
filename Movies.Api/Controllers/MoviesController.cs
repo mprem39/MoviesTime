@@ -5,6 +5,7 @@ using Movies.Api.Auth;
 using Movies.Api.Mapping;
 using Movies.Appilication.Models;
 using Movies.Application.Services;
+using Movies.Contract.Requests;
 using Movies.Contracts.Requests;
 using Movies.Contracts.Responses;
 
@@ -49,10 +50,12 @@ namespace Movies.Api.Controllers
         }
        
         [HttpGet(ApiEndpoints.Movies.GetAll)]
-        public async Task<IActionResult> GetAllMovies(CancellationToken token)
+        public async Task<IActionResult> GetAllMovies([FromQuery] GetAllMoviesRequest request, CancellationToken token)
         {
             var userId = HttpContext.GetUserId();
-            var movies = await _movies.GetAllAsync(userId,token);
+            var options = request.MapToOptions()
+                .WithUser(userId);
+            var movies = await _movies.GetAllAsync(options, token);
             var movieResponses = movies.MapToMoviesResponse();
             return Ok(movieResponses);
         }
