@@ -1,7 +1,6 @@
 ﻿using Movies.Appilication.Models;
 using Movies.Application.Models;
-using Movies.Contract.Requests;
-using Movies.Contracts.Requests;
+using Movies.Contract.Requests.V1;
 using Movies.Contracts.Responses;
 
 namespace Movies.Api.Mapping;

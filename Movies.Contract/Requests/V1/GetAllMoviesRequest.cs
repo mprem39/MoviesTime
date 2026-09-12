@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Movies.Contract.Requests;
+namespace Movies.Contract.Requests.V1;
 
 public class GetAllMoviesRequest : PagedRequest
 {
