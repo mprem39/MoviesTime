@@ -6,6 +6,7 @@ using Movies.Api.Mapping;
 using Movies.Appilication.Models;
 using Movies.Application.Services;
 using Movies.Contract.Requests;
+using Movies.Contract.Responses;
 using Movies.Contracts.Requests;
 using Movies.Contracts.Responses;
 
@@ -37,7 +38,7 @@ namespace Movies.Api.Controllers
         }
         
         [HttpGet(ApiEndpoints.Movies.GetById)]
-        public async Task<IActionResult> GetMovieById([FromRoute] string idorSlug, CancellationToken token)
+        public async Task<IActionResult> GetMovieById([FromRoute] string idorSlug,[FromServices] LinkGenerator linkGenerator,CancellationToken token)
         {
             var userId= HttpContext.GetUserId();
             var movie = Guid.TryParse(idorSlug, out var id) ? await _movies.GetByIdAsync(id, userId, token) : await _movies.GetBySlugAsync(idorSlug, userId,token);
@@ -46,6 +47,25 @@ namespace Movies.Api.Controllers
                 return NotFound();
             }
             var movieResponse = movie.MapToMovieResponse();
+            var movieObject = new { id = movie.Id };
+            movieResponse.Links.Add(new Link
+            {
+                Href = linkGenerator.GetUriByAction(HttpContext, nameof(GetMovieById), values: new {idorSlug = movie.Id}),
+                Rel = "self",
+                Type = "GET"
+            });
+            movieResponse.Links.Add(new Link
+            {
+                Href = linkGenerator.GetUriByAction(HttpContext, nameof(UpdateMovie), values: new { id = movie.Id }),
+                Rel = "self",
+                Type = "PUT"
+            });
+            movieResponse.Links.Add(new Link
+            {
+                Href = linkGenerator.GetUriByAction(HttpContext, nameof(DeleteMovie), values: new { id = movie.Id }),
+                Rel = "self",
+                Type = "DELETE"
+            });
             return Ok(movieResponse);
         }
        
