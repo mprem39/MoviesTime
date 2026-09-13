@@ -1,9 +1,9 @@
 ﻿using Movies.Appilication.Models;
 using Movies.Application.Models;
-using Movies.Contract.Requests.V1;
+using Movies.Contract.Requests.V2;
 using Movies.Contracts.Responses;
 
-namespace Movies.Api.Mapping;
+namespace Movies.Api.Mapping.V2;
 
 public static class ContractMapping
 {
@@ -18,16 +18,7 @@ public static class ContractMapping
         };
     }
 
-    public static Movie MapToMovie(this UpdateMovieRequest request, Guid id)
-    {
-        return new Movie
-        {
-            Id = id,
-            Title = request.Title,
-            YearOfRelease = request.YearOfRelease,
-            Genres = request.Genres.ToList()
-        };
-    }
+
     public static MovieResponse MapToMovieResponse(this Movie movie)
     {
         return new MovieResponse

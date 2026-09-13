@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.IdentityModel.Tokens;
@@ -45,6 +46,16 @@ builder.Services.AddAuthorization(x =>
             c.User.HasClaim(m => m is { Type: AuthConstants.AdminUserClaimName, Value: "true" }) ||
             c.User.HasClaim(m => m is { Type: AuthConstants.TrustedMemberClaimName, Value: "true" })));
 });
+
+builder.Services.AddApiVersioning(options=>
+{ 
+    options.DefaultApiVersion = new ApiVersion(1.0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    // options.ApiVersionReader = new HeaderApiVersionReader("api-version");
+    options.ApiVersionReader = new MediaTypeApiVersionReader("api-version");
+}
+).AddMvc();
 
 
 var app = builder.Build();
