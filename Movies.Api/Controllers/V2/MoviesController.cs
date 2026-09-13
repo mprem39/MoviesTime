@@ -1,13 +1,9 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Auth;
 using Movies.Api.Mapping.V2;
-using Movies.Appilication.Models;
 using Movies.Application.Services;
 using Movies.Contract.Requests.V2;
-using Movies.Contract.Responses;
 
 namespace Movies.Api.Controllers.V2;
 
