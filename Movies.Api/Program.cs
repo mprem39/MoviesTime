@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Movies.Api.Auth;
+using Movies.Api.Health;
 using Movies.Api.Mapping;
 using Movies.Api.Swagger;
 using Movies.Appilication;
@@ -61,6 +62,9 @@ builder.Services.AddApiVersioning(options=>
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 builder.Services.AddSwaggerGen(x => x.OperationFilter<SwaggerDefaultValues>());
 
+builder.Services.AddHealthChecks()
+    .AddCheck<DatabaseHealthCheck>(DatabaseHealthCheck.Name);
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -80,6 +84,7 @@ if (app.Environment.IsDevelopment())
     }
 }
 
+app.MapHealthChecks("_health");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
