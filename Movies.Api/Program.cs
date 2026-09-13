@@ -65,6 +65,8 @@ builder.Services.AddSwaggerGen(x => x.OperationFilter<SwaggerDefaultValues>());
 builder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>(DatabaseHealthCheck.Name);
 
+builder.Services.AddResponseCaching();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -90,6 +92,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseResponseCaching();
 app.UseMiddleware<ValidationMappingMiddleware>();
 app.MapControllers();
 
